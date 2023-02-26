@@ -1,53 +1,36 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize)  {
+  async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('publications', {
+      await queryInterface.createTable('publications_tags', {
         id: {
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4,
+          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.UUID
+          type: Sequelize.INTEGER
         },
-        user_id: {
-          allowNull: false,
-          defaultValue: Sequelize.UUIDV4,
-          type: Sequelize.UUID,
-          sequelize-cli db:migrate
-        },
-        publication_type_id: {
-          allowNull: false,
-          type: Sequelize.BIGINT,
-          references: {
-            model: 'publicationsTypes',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'RESTRICT'
-        },
-        city_id: {
-          allowNull: false,
+        tag_id: {
           type: Sequelize.INTEGER,
+          allowNull:false,
           references: {
-            model: 'cities',
+            model: 'tags',
             key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'RESTRICT'
         },
-        title: {
-          allowNull: false,
-          type: Sequelize.STRING
-        },
-        description: {
-          allowNull: false,
-          type: Sequelize.STRING
-        },
-        content: {
-          allowNull: false,
-          type: Sequelize.STRING
+        publication_id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          allowNull:false,
+          references: {
+            model: 'publications',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'RESTRICT'
         },
         createdAt: {
           allowNull: false,
@@ -58,13 +41,12 @@ module.exports = {
           type: Sequelize.DATE
         }
       },{ transaction })
-
       await queryInterface.addConstraint(
-        'publications',
+        'publications_tags',
         {
-          fields:['user_id','publication_type_id','city_id'],
+          fields:['tag_id','publication_id'],
           type:'unique',
-          name:'publications_user_id_publication_type_id_city_id',
+          name:'publications_tag_id_publication_id',
           transaction
         })
       await transaction.commit()
@@ -76,7 +58,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('publications', {transaction});
+      await queryInterface.dropTable('publications_tags', {transaction});
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
