@@ -4,26 +4,33 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('cities', {
+      await queryInterface.createTable('users_tags', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        state_id: {
+        tag_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'states',
+            model: 'tags',
             key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'RESTRICT'
         },
-        name: {
-          type: Sequelize.STRING,
-          allowNull: false
+        user_id: {
+          allowNull: false,
+          defaultValue: Sequelize.UUIDV4,
+          type: Sequelize.UUID,
+          references: {
+            model: 'users',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'RESTRICT'
         },
         createdAt: {
           allowNull: false,
@@ -34,29 +41,29 @@ module.exports = {
           type: Sequelize.DATE
         }
       },{ transaction })
-    
       await queryInterface.addConstraint(
-        'cities',
+        'users_tags',
         {
-          fields: ['state_id'],
-          type: 'unique',
-          name: 'cities_state_id',
+          fields:['user_id','tag_id'],
+          type:'unique',
+          name:'users_tags_user_id_tag_id',
           transaction
         })
       await transaction.commit()
-    } catch (error) {
-      await transaction.rollback();
+    } catch (error){
+      await transaction.rollback()
       throw error
     }
   },
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('cities', {transaction});
+      await queryInterface.dropTable('users_tags', {transaction});
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
       throw error
     }
+
   }
 };

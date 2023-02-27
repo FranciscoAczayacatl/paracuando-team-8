@@ -15,7 +15,12 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.UUIDV4,
           type: Sequelize.UUID,
-          sequelize-cli db:migrate
+          references: {
+            model: 'users',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'RESTRICT'
         },
         publication_type_id: {
           allowNull: false,

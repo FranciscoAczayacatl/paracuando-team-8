@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class publications_images extends Model {
     static associate(models) {
-      publications_images.belongsTo(models.Publications,{as:'publications', primaryKey:'publication_id'})
+      publications_images.belongsTo(models.publications,{as:'publication', primaryKey:'publication_id'})
     }
   }
   publications_images.init({
@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     publication_id: {
       allowNull: false,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     image_url: {
       type: DataTypes.STRING,

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Countries extends Model {
     static associate(models) {
       Countries.hasMany(models.Users, { as: 'users', foreignKey: 'country_id' })
-      Countries.hasMany(models.States, { as: 'states', foreignKey: 'country_id' })
+      Countries.hasMany(models.states, { as: 'states', foreignKey: 'country_id' })
     }
   }
   Countries.init({
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Countries',
-    tableName: 'countries',
+    tableName: 'Countries',
     underscored: true,
     timestamps: true,
     scopes: {

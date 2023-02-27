@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class publicationsTypes extends Model {
     static associate(models) {
-       publicationsTypes.hasMany(models.Publications,{as: 'publications', primaryKey:'publication_type_id'})
+       publicationsTypes.hasMany(models.publications,{as: 'publications', primaryKey:'publication_type_id'})
     }
   }
   publicationsTypes.init({

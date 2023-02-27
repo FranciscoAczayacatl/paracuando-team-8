@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class tags extends Model {
     static associate(models) {
-      tags.hasMany(models.PublicationsTags,{ as:'publications_tags', foreignKey:'tag_id'})
-      tags.hasMany(models.UsersTags,{as:'users_tags', foreignKey:'tag_id'})
+      tags.hasMany(models.publications_tags,{ as:'tags', foreignKey:'tag_id'})
+      tags.hasMany(models.users_tags,{as:'users_tags', foreignKey:'tag_id'})
     }
   }
   tags.init({
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     name: {
       type:DataTypes.STRING,

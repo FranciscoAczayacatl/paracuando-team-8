@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class cities extends Model {
     static associate(models) {
-      cities.belongsTo(models.States, {as: 'country', foreignKey: 'country_id'});
-      cities.hasMany(models.Publications, {as: 'Publications', foreignKey: 'city_id'});
+      cities.belongsTo(models.states, {as: 'state', foreignKey: 'state_id'})
+      cities.hasMany(models.publications, {as: 'Publications', foreignKey: 'city_id'})
     }
   }
   cities.init({
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     state_id:{
-      type:  DataTypes.BIGNIT,
+      type:  DataTypes.INTEGER,
       allowNull: false
     },
     name: {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'cities',
-    tableName: 'ciites',
+    tableName: 'cities',
     underscored: true,
     timestamps: true,
   });
